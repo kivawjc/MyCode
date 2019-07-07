@@ -1,0 +1,91 @@
+
+### 整体项目架构
+
+```
+父项目 luowowo
+common:存放公共的开发工具
+    |-- 基本domain
+    |-- 共用异常
+    |-- 共用工具类
+website: PC前端
+mgrsite: 管理后端
+
+会员服务,用户相关操作
+trip-member-api: 会员(用户)系统服务接
+trip-member-server:会员(用户)系统服务接口实现
+
+缓存服务,偏向于redis的使用
+trip-cache-api: 缓存系统服务接口
+trip-cache-server: 缓存系统服务接口实现
+  |-- 主要为：redis缓存
+  |-- 登录token缓存
+  |-- 短信验证码缓存
+  |-- 统计数据 回复数量 点赞数量, 收藏数量 分享数量
+
+文章服务 ：攻略，游记
+trip-acticle-api
+trip-acticle-server
+  |-- 攻略crud
+  |-- 游记crud
+  |-- 目的地crud
+  |-- 区域crud
+
+点评服务：攻略评论，游记评论，知识问答，旅游论坛
+trip-comment-api
+trip-comment-server
+
+搜索服务
+trip-search-api
+trip-search-server
+全文搜索，精确搜索
+攻略搜索，游记搜索，目的地搜索，用户搜索
+```
+
+### 项目搭建
+
+```
+1. 先创建一个parent 项目
+    |-- 删除src目录，修改pom.xml
+    |-- 添加springboot parent
+    |-- 添加依赖管理
+        |-- dubbo-spring
+        |-- 子项目的版本控制,common + api
+    |-- 公共依赖
+        |-- lambom
+        |-- fastjson
+    |-- 插件
+        |-- 配置src/xml 告诉idea 去main/java加载配置文件，仅用于将mybatis文件放置到mapper接口包中
+2. 创建一个trip-common 模块
+    |-- 创建domain 包和BaseDomain类
+3. 创建一个trip-member-api模块
+    |-- 依赖common
+    |-- 添加application-jdbc.properties
+    |-- 逆向工程配置文件
+    |-- 创建com.kiva.luowowo.member.domain
+    |-- 导入UserInfo extends BaseDomain
+    |-- 创建mybatis mapper 相关文件
+    |-- 创建 IUserInfoService接口
+    |-- 创建一个config, MemberConfig
+        |-- @Configuration
+        |-- @MapperScan(basePackage="") 配置mybatis
+        |-- @properties() //引入主配置文件--> 配置了Druid
+3. 创建一个trip-member-server模块
+    |-- 创建 com.kiva.luoowow.member.service.impl.UserInfoServiceImpl
+    |-- 添加 member-api,dubbo 的依赖
+    |-- 在service中添加 @Service 注解
+    |-- 创建主配置运行文件 MemberServer
+    |-- @SpringBootApplication
+    |-- @Import(MemberConfig.class)
+    |-- @EableDubbo
+    |-- 在properties中配置dubbo
+        |-- 启动检查未false
+        |-- dubbo 超时间 :20000
+4. 创建trip-website
+    |-- 添加项目依赖 common,member-api
+    |-- 添加properties(记得把包改成resource)
+    |-- 创建一个 LoginController
+    |-- 添加一个hello方法
+    |-- 添加一个WebsiteApp--> 不需要添加EnableDubbo
+````
+
+![](assets/day01-a78630a8.png)

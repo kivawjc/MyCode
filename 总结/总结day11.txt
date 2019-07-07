@@ -1,0 +1,171 @@
+-----------单例设计模式--------------
+
+1. 私有化构造器，防止外界创建对象
+2. 自己提供一个对象
+
+
+class SingleDemo{
+    private SingleDemo(){}
+    private SingleDemo instance=nulll;
+
+    public static SingleDemo getInstance(){
+        if(instance==null)}{
+            instance=new SingleDemo();
+        }
+    }
+}
+
+
+-----------------包装类型---------------------
+
+基本数据类型和包装类型的关系
+
+int          Integer
+byte       Byte
+short      Short
+long        Long
+char        Character
+float        Float
+double     Double
+
+装箱:把基本数据类型转换成对应的包装类对象
+    Integer intNum=new Integer(1);
+    Integer intNum= Integer.valueOf(1);
+拆箱:把包装类对象转换为基本数据类型
+   int val =intNum .intValue();
+String 类型转换成int
+    int val=Integer.parseInt("123");
+
+   从jAVA5开始，支持自动拆箱和自动装箱操作
+   自动装箱
+   Integer num=1;
+   自动拆箱
+   int value=num;
+
+   -------缓存设计--------
+   比较俩个Integer是否相等
+   Integer i1=new Integer(123);
+   Integer i2=new Integer(123);
+   System.out.println(i1==i2);//false
+   System.out.println(i1.equals(i2));//true
+
+   valueOf()方法针对[-128,127]之间的整数缓存设计
+    Integer i1=Integer.valueOf(123);
+    Integer i2=Integer.valueOf(123);
+    System.out.println(i1==i2);//true
+
+     底层等价于Integer.valueOf()
+     Integer i5=123;
+     Integer i6=123;
+
+注意:
+==是比较对象的内存地址是否相等
+equals是比较存储数据是否相等
+
+-----------------------BigDecimal-------------------------
+
+//使用double不精确
+System.out.println(0.09+0.01);
+
+//double类型的构造器,传入的数据是不精确的，结果也不精确
+BigDecimal  num1=new BigDecimal(0.09);
+BigDecimal  num2=new BigDecimal(0.01);
+//结果也不精确
+System.out.println(num1.add(num2));
+
+//String类型的构造器
+BigDecimal  num3=new BigDecimal("0.09");
+BigDecimal  num4=new BigDecimal("0.01");
+//结果精确
+System.out.println(num3.add(num4));
+System.out.println(num3.subtract(num4));
+System.out.println(num3.multiply(num4)).setScale(2,RoundingMode.HALF_UP);
+//四舍五入保留俩位
+System.out.println(num3.divide(num,2,BigDecimal.ROUND_HALF_UP));
+
+
+---------------------字符串---------------------
+1. 不可变字符串:String :当String对象创建完成之后，该对象的内容是不能改变的,内容改变就变成了新的对象,改变了地址值
+2. 可变字符串:StringBuild/StringBuffer:对象创建完成之后，对象的内容可以改变
+
+---------String类型------------
+字符串的底层是final char[],因此是不变的
+String 直接赋值和new出来的区别[面试]
+        String a="abc";
+        String b=new String("abc");
+
+如何分配内存
+
+方法区
+    |---常量池:字符串常量
+                            abc  :0x1234
+
+栈
+    |----a : 0x1234
+    |----b: 0x3456
+
+堆
+    |---String 对象   0x3456
+            |---引用 0x1234常量
+
+变量a指向的是常量池中的"abc"
+变量b指向的是堆中的对象，该对象再指向常量池中的"abc"
+
+a和b最终获取到的结果是相同的，但是引用的地址值不同
+
+字符串的比较:
+==：俩个字符所引用 的内存地址是否相同
+equeals:俩个字符串的内容是否相同
+
+
+System.out.println("abc"=="abc");//true
+System.out.println("abc"==new String("abc"));//false
+System.out.println(new String("abc")==new String("abc"));//false
+
+System.out.println("abc".equals("abc"));//true
+System.out.println("abc".equals(new String("abc")));//true
+System.out.println(new String("abc").equals(new String("abc")));//true
+
+String 对象的空值:
+1. null,引用为空,没有分配内存空间
+2. 空字符串(""),已经初始化(分配内存空间)，只不过没有内容
+
+判断一个字符串是否为空
+public static boolean isEmpty(String str){
+        return str!=null&&!"".equals(str.trim());
+}
+
+String str="abc";
+String case=str.toUpperCase();
+System.out.println(str);//不会变成大写   "abc"
+System.out.println(case);//变成大写       "ABC"
+
+------------String 的api方法-------------
+
+int length()  返回次字符串的字符个数
+trim() 去掉请后空格
+char charAt(int index) 返回指定索引的字符
+indexOf() 返回子字符串在此字符串中第一次出现的索引位置
+
+
+-----------StringBuilder/StringBuffer---------------
+
+StringBuilder/StringBuffer用于拼接字符串
+1> StringBuilder：线程不安全，效率高
+2> StringBuffer：用,线程安全，效率低
+
+StringBuilder底层定义了一个char[],初始容量为16个字符，如果超过16个字符，需要进行扩容
+
+--------------------面试题-----------------------
+int   Integer    string
+   //装箱
+    Integer intNum=new Integer(123);
+    Integer intNum02=Integer.valueOf(123);
+
+    //拆箱
+    int num=intNum.intValue();
+    //string --> int
+    int num02=Integer.parseInt("123");
+
+    
+    

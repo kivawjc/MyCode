@@ -1,0 +1,183 @@
+顺序结构:
+    程序的执行顺序是从上往下执行
+
+选择结构:
+    *************** if 语句******************
+            if( boolean 表示式){  //为true 时执行
+                    语句体
+            }
+
+    示例代码:
+    int a=10;
+    if(a>5){  
+            System.out.println("a 大于 5");  //执行
+    }
+    if(a>20){
+            System.out.println("a 大于 20"); //不执行
+    }
+
+   **************** if - else 语句******************
+             if( boolean 表示式){  //为true 时执行
+                    语句体1
+            } else {   //为false 时执行
+                    语句体2
+            }
+
+    示例代码:
+    int a=2;
+    if(a%2==0){
+          System.out.println("a 是偶数");
+    } else {
+          System.out.println("a 是奇数");
+    }
+
+    **************** if - else if - else 语句***********
+    条件互斥: 当满足条件后,其余的条件语句不执行
+             if( boolean 表示式){  //为true 时执行
+                    语句体1
+            } else if(boolean 表示式) {   //为false 时执行
+                    语句体2
+            }
+            ...可以有多个else if
+            else{
+                    所有的布尔表达式为 false 时执行
+            }
+
+    示例代码:
+    int a=10;
+    int b=20;
+    if(a>b){
+            System.out.println("a>b");
+    } else if(a<b){
+            System.out.println("a <b");
+    } else {
+            System.out.println("a ==b ");
+    }
+
+ **************** switch 语句 ******************
+
+    使用场景:用于判断一个变量是否是等于一个常量的时候
+
+   变量类型: byte,short ,char(会自动提升成int),int(不能是long)
+    case 是执行代码的入口,当进入case后，没有加break,会自动忽略后面的case 直接执行后面的语句体代码,直到遇到break,return;
+            
+            switch(变量){
+                    case A:
+                            语句体1;
+                            break ;
+                    case B:
+                            语句体2;
+                            break ;
+                    ....
+                    default ：
+                            以上值都不满足时执行
+                            break ;
+            }
+    示例代码:
+    int weekday=5;
+    switch(weekday){
+            case 1: 
+                    System.out.println("星期一");
+                    break ;
+             case 2: 
+                    System.out.println("星期二");
+                    break ;
+             case 3: 
+                    System.out.println("星期三");
+                    break ;
+             case 4: 
+                    System.out.println("星期四");
+                    break ;
+            case 5: 
+                    System.out.println("星期五");
+                    break ;
+            case 6: 
+                    System.out.println("星期六");
+                    break ;
+            case 7: 
+                    System.out.println("星期七");
+                    break ;
+            default：
+                    System.out.println("输入不规范");
+                    break ;
+    }
+
+
+**************** white 语句 ******************
+
+    while( boolean 表达式){  //为true 执行循环体, 为false 跳出
+            循环体;
+    }
+
+示例代码:
+//打印从1-100:
+int count=1;
+while(count<=100){
+    System.out.println(count);
+    count++;
+}
+
+//计算100以内的正整数和
+int count=1;
+int sum=0;
+while(count<=100){
+     sum+=count;
+     count++;
+}
+System.out.println(count);
+
+
+
+**************** do white 语句 ******************
+do white ：不管循环条件的真假，至少执行一次循环体
+    do{
+        循环体;
+    }while(boolean 表达式);
+
+
+    //计算100以内的正整数和
+    int count=1;
+    int sum=0;
+    do{
+         sum+=count;
+         count++;
+    }white(count<=100);
+    System.out.println(count);
+
+    ****************  for 语句 ******************
+
+    for([1]初始化语句;[2]boolean 表达式;[4]循环后操作语句){
+           [3] 循环体
+    }
+
+    执行流程:
+
+            初始化语句 --->boolean 表达式 ---->循环体  --->循环后操作语句
+
+    求 100 以内的正整数之和
+    int number;
+    int sum=0;
+    for(number=1;number<=100;number++){
+            sum+=number;
+    }
+    System.out.println("sum="+sum);
+
+    打印出 A-Z
+    for(int i=65;i<65+26;i++){
+            char c=(char)i;
+            System.out.println(c);
+    }
+
+
+****************循环控制 ******************
+
+    for(int i=0;i<10;i++){
+            if(i==7){
+                    break ; //结束循环
+                    //return; 结束循环所在的方法
+                    //continue; 结束本次循环，开始下一循环
+            }
+            System.out.println("i="+i);
+    }
+http://192.168.113.1/
+

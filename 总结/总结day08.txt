@@ -1,0 +1,159 @@
+
+--------------------------this 关键字---------------------------
+
+this 关键字
+this表示当前对象
+
+主要存在俩个位置
+1> 在构造器中：表示当前被创建的对象
+2> 在方法中：哪一个对象调用this所在的方法，this就表示哪个对象
+
+问题描述:局部变量和成员变量同名，此时方法中调用变量时根据就近原则，存在二义性(歧义)
+
+this的作用:
+1> 解决局部变量和成员变量在方法中的二义性
+2> 同一个类中非static方法之间的相互调用(可以忽略)
+3>构造器重载的调用
+
+--------------------------继承---------------------------
+
+1>继承能解决多个类存在共同代码的问题;
+2> 子类能方便使用父类的代码
+继承语法
+public class 子类 extends 父类{
+    
+}
+注意:
+1>java中[只支持单继承]，但是支持多重继承,一个类只能有一个直接的父类，父类可以再有父类
+2> Object类时java语言的根类，[任何类都是Object的子类]，要么是直接子类，要么是间接子类
+
+[一个父类可以有多个子类]
+public class A{}
+public class B extends A{}      B-->A
+public class C extends A{}      C-->A
+[java支持多重继承]
+public class A{}
+public class B extends A{}
+public class C extends B{}    A-->B-->C
+
+
+子类可以继承父类哪些成员
+1> 父类的成员使用public 和protected修饰，子类都能继承
+2>如果父类和子类在同一包下，使用缺省修饰成员，子类可以继承到
+3>使用private修饰，子类能继承到，但是没有访问权限,private 只能在本类中使用
+4>父类的构造器，子类不能继承，因为构造器必须和当前类名相同
+
+
+
+--------------------------方法覆盖---------------------------
+
+子类中存在与父类一摸一样的方法，子类覆盖了父类的方法(重写)
+方法的执行顺序:先在子类中查找是否有对应的方法，若存在执行子类的方法，
+若不存在，执行父类的方法，父类没有方法则报错
+注意:
+private 修饰的方法不能被子类所继承，所以不存在覆盖
+
+
+--------------------------super关键字---------------------------
+
+表示当前对象的父类对象
+作用:
+1>使用super能在子类中调用父类被覆盖的方法
+2>在子类构造器中，调用父类的构造器
+
+--------------------------抽象---------------------------
+1. 求圆形和矩形的面积
+
+public abstract class AbstractGraph{
+    
+    public abstract double getArea();
+
+}
+
+
+public class Circle extends AbstractGraph{
+    private int r;
+    public void setR(int r){
+        this.r=r;s
+    }
+    @Override
+    public double getArea(){
+        return 3.14*r*r;
+    }
+}
+
+public class Rectangle extends AbstractGraph{
+    private int width;
+    private int height;
+    
+    public Rectangle(){}
+
+    public Rectangle(int width,int height){
+        this.width=width;
+        this.height=height;
+    }
+
+  @Override
+    public double getArea(){
+        return width*height;
+    }
+}
+
+
+抽象方法特点:
+1>使用abstract修饰,没有方法体,子类必须覆盖
+2>抽象方法定义在抽象类或接口中
+
+抽象类的特点:
+抽象类[不能创建对象]
+抽象类有变量，构造器，方法，提供给子类使用
+抽象中[拥有抽象方法和普通方法](抽象类中不一定有抽象方法,但抽象方法必须在抽象类中)
+子类必须覆盖抽象类的方法，或者把子类作为抽象类
+
+
+--------------------------Object类---------------------------
+
+public boolean equals(Object obj) {
+        return (this == obj);
+}
+ public String toString() {
+        //字节码文件的名字+@+地址值的16进制
+        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+}
+[toString()方法:   ]
+默认打印:字节码文件的名字+@+地址值的16进制
+一般重写用于打印类的属性信息
+
+==和equal
+==：比较基本数据类型，比较值是否相等
+        比较引用类型对象，比较引用内存的地址值是否相等
+equal：在object中，equal默认比较俩个对象内存的地址值是否相等,需覆盖hashcode和equal
+
+
+
+--------------------------注意:面试题---------------------------
+1.方法的重载和覆盖
+        |----重载：同一个类中，相同的方法名，不同的参数类型
+        |-----重写：子类中存在与父类一摸一样的方法,子类重写父类的方法叫重写
+
+2. 写出结果
+注意：如果父类变量使用private
+class A{
+    int aa=10;
+}
+class B extends A{
+    int aa=20;
+    public void show(){
+        int aa=30;
+        System.out.println(super.aa);  //10   
+        System.out.println(this.aa);        //20
+         System.out.println(aa);        //30
+    }
+}
+3. ==和equals的比较区别
+如果比较的是对象
+        ==  ：比较俩个对象的内存地址值
+        equals：比较俩个对象的内容(重写该方法)
+如果比较的是基本类型:
+        ==：比较俩个值是否相等
+        equals：只比较Obejct对象，不比较基本类型

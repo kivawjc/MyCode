@@ -1,0 +1,185 @@
+-----------------------接口-------------------------------------
+ 定义：接口是多个抽象方法的集合
+ 接口中的方法默认都是 public abstract修饰
+
+  语法：
+  interface 接口名{
+        成员变量
+                |----必须是常量
+        成员方法
+                |----必须是抽象方法
+  }
+
+--------- 1. 接口可以继承多个接口----------
+    interface A{}
+    interface B{}
+    interface C extends A,B{}
+
+--------2. 接口与实现类的关系----------
+
+  接口:定义多个抽象方法，却不实现
+  实现类:实现接口，覆盖接口中的方法，提供具体实现
+
+  interface IWalkable{
+        void walk();
+  }
+  class Cat implement IWalkable{
+        public void walk(){
+            System.out.println("猫步");
+        }
+  }
+  IWalkable c=new Cat();
+  c.walk();
+
+  注意:
+  1>子类覆盖父类的方法时，访问权限必须大于父类，覆盖接口的方法只能用public 修饰
+  2>实现类可以继承父类，同时实现多个接口
+  3> 先写extends再写implements
+                public class A extends B,implement C,D{}
+  4>接口可以继承多个接口
+
+ -------------多态--------------------
+  
+  多态：父类引用类型可以指向子类对象，调用方法时，实际调用子类的方法
+
+  格式:
+  父类 变量名=new 子类();
+  接口 变量名=new 实现类();
+
+
+ 多态:一个对象具有多种形态
+  Animal a=new Cat();
+  a=new Cat();   // a 表示cat形态
+  a=new Dog();  //a 表示dog形态
+
+  a具有俩种类型:
+  1. 编译类型：声明对象变量的类型--->Animal
+  2. 运行类型：对象的真实类型
+
+  public class Animal{
+    public void shout(){
+        System.out.println("动物叫");
+    }
+  }
+
+public class Cat extends Animal{
+      public void shout(){
+        System.out.println("猫叫");
+    }
+}
+
+public class Dog extends Animal{
+      public void shout(){
+        System.out.println("狗叫");
+    }
+}
+
+
+Animal a=new Cat();
+a.shout();    // 打印猫叫
+a=new Dog();
+a.shout(); // 打印狗叫
+
+-----------------多态细节:----------------
+    编译时期:
+        |-----先去判断父类是否存在该方法
+                |-----不存在，编译报错
+    运行时期
+        |-----判断子类中是否存在shout方法
+                |-----不存在,执行父类中的方法
+                |-----存在,执行子类中的方法
+
+
+
+
+--------------引用类型转化:---------------
+    Animal a=new Dog();
+    //需要强转：父类类型对象转换成子类类型的变量
+    //前提:该对象的真实类型应该是子类类型
+    Dog d=(Dog)a;
+
+-------------instanceof 运算符-----------------
+
+    判断对象是否是某一个类的实例
+    语法:
+    对象 instanceof 类
+
+注意:
+1> 使用多态,只能使用父类中存在的方法
+2> 子类有覆盖父类的方法时，执行子类的方法
+
+
+
+Usb案例
+
+public interface IUSB{
+    void swapData();
+}
+
+public class Mouse implement IUSB{
+    public void swapData(){
+         System.out.println("鼠标移动...");
+    }
+}
+
+
+public class KeyBoard implement IUSB{
+    public void swapData(){
+         System.out.println("键盘工作...");
+    }
+}
+
+public class MotherBoard{
+    public void plugin(IUSB usb){
+        System.out.println("安装....");
+        usb.swapData();
+    }
+}
+
+class UsbDemo{
+    public static void main(String[] args){
+        MotherBoard mb=new MotherBoard();
+        Mouse mouse=new Mouse();
+        KeyBoard keyboard=new KeyBoard();
+        mb.swapData(m);
+        mb.swapData(m);
+    }
+}
+
+--------------------------面向对象注意------------------------------
+1方法的参数是引用类型:------>传递的是对象的地址值.
+
+2方法的返回值是引用类型:---->返回的是对象的地址值
+
+
+3自定义类作为一个另一个类的成员变量
+
+
+4类的成员变量修改问题
+    1:先获得这个成员变量的值
+    2:将这个成员变量值修改
+    3:将修改后的值重新添加到对象中
+    
+5方法的参数是引用类型(自定义类型),形式参数的修改影响实际参数
+        因为方法传递的是对象的地址值,在两个引用变量指向相同地址值的时候,
+        一方修改数据,另一方也会跟着修改.
+
+
+  ---------------------------------------------------------
+  接口和抽象类的区别
+  抽象类有抽象方法也有普通方法,有构造器,抽象类只能单继承
+  接口只有抽象方法和常量，没有构造器，接口可以继承多个接口
+
+                            接口                            抽象类
+关系                      实现                                继承
+构造器                 没有                                   有                             
+成员变量             常量                              没有限定
+成员方法            全部是抽象方法            没有限定                                                         
+                            多继承                             单继承
+
+                            6个问答  6个编程
+
+
+
+
+                                                                    

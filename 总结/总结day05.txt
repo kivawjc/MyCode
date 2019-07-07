@@ -1,0 +1,98 @@
+方法：
+1. 把完成一个功能的多行代码，放到一个代码块中
+2. 方法名可以相同，但是不能参数类型和顺序相同，方法重载
+实现代码的复用，降低维护成本
+
+定义方法语法格式:
+[修饰符] 返回值类型 方法名(参数列表){
+    方法体;
+    [return 返回值;]
+}
+
+
+示例代码:
+//获取来个数之和
+public static int getSum(int num1,int num2){
+    return num+num2;
+}
+
+
+return 关键字:
+1. 把某个值返回给调用者
+2. 结束当前方法
+3. return 之后不能再写代码语句
+
+
+//定义一个方法，传入数组，查找指定元素在数组中第一次出现的索引
+
+public int indexOf(int key,int[] arr){
+
+        for(int i=0;i<arr.length;i++){
+                if(key==arr[i]){
+                        return i;
+                }
+        }
+        return -1;//查找不到时返回
+}
+
+
+方法可变参数
+1> 可变参数只能放在方法中的最后一个参数，避免歧义
+2> 方法的可变参数的底层是一个数组
+
+
+
+// 定义一个方法，传入俩个参数,
+// 一个double数组表示多个货品的价格
+// 一个double类型的折扣，返回货品总价格
+
+public double getTotalPrice(double[] arr,double cutoff){
+     double total=0.0;
+     for(double price:arr){
+            total+=price;
+     }
+     return total*cutoff;
+}
+
+
+// 定义一个方法，传入俩个参数,
+// 一个double数组表示多个货品的价格
+// 一个double类型的折扣，返回货品总价格
+
+public double getTotalPrice(double cutoff,double... arr){
+     double total=0.0;
+     for(double price:arr){
+            total+=price;
+     }
+     return total*cutoff;
+}
+
+
+方法的重载:
+参数列表:  * 方法的参数类型   * 方法的个数  *参数的顺序
+方法签名: 方法名称+方法参数
+
+方法重载: 在一个类中，多个方法的名字是可相同的，但是参数列表不能相同
+只要参数类型，参数个数，参数顺序任意不同
+
+
+方法值传递机制:
+1> 基本数据类型传递的是值不是变量
+2>传递引用数据类型:传递的是参数所引用的堆空间的地址的值(将引用类型的值的地址复制一份给参数，方法中形式参数的变量也指向了堆空间)
+
+public void change(int x){
+    System.out.println("changes before,x="+x);  //10
+    x=100;
+      System.out.println("changes after,x="+x); //100
+}
+
+public static void main(String[] args){
+    int a=10;
+    System.out.println("main before,x="+x); 
+     change(a);
+    System.out.println("main after,x="+x);
+}
+
+
+
+

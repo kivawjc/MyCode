@@ -1,0 +1,291 @@
+
+[##############this关键字#############]
+
+this：表示当前对象
+
+作用:
+1> 解决局部变量和成员变量的二义性
+2> 同一个类中非static 方法之间相互调用(可以省略)
+3>构造器重载的互调，构造器重载，使用this调用其他构造器
+        |----只能调用一个构造器
+        |----构造器的调用只能放在第一句话
+
+
+public class Cat(){
+    
+    private String name;
+    private int age;
+
+    //调用奇特构造器
+    public Cat(String name){
+        this(name,0);
+    }
+
+    public Cat(String name,int age){
+        this.name=name;
+        this.age=age;
+    }
+
+    在构造器中this表示当前创建的对象
+    public Cat(){
+        System.out.println("构造器"+this);
+    }   
+    在方法中，this 表示当前调用方法的对象 (c1)
+    public void say(){
+        System.out.println("say()"+this);
+    } 
+}
+
+public static void main(String[] args){
+    Cat c1=new Cat();
+    //c1对象调用say()
+    c1.say();
+}
+
+
+[############## super关键字#############]
+
+super：当前对象的父类对象
+
+1> 在创建子类对象时，在子类构造器的第一行会先调用父类的构造器
+2> 在子类方法中，调用父类被覆盖的方法
+        |------this.方法()  ->子类的方法
+        |------super.方法() ->父类的方法
+
+public class Person{
+    private String name;
+    private int age;
+
+    public  Person(){
+        System.out.println("调用Person构造器");
+    }
+
+    public Person(String name){
+        this.name=name;
+    }
+
+    public void work(){
+            System.out.println("Person....work....");
+    }
+}
+
+
+public class Student extends Person{
+    private String sno;
+    //子类的第一行会默认调用父类的构造器
+    //如果父类没有无参数的构造器，会出错
+    public Student(){
+        //super();
+         System.out.println("调用Student构造器");
+    }
+
+    public Student(String name,String sno){
+        super(name);
+        this.sno=sno;
+    }
+
+    //重写父类的方法
+    @Override
+     public void work(){
+            System.out.println("Person....work....");
+    }
+
+    public void test(){
+        super.doWork();//调用父类的doWork
+        this.work();//调用当前类的doWork,如果子类没有，则带哦用父类
+    }
+}
+
+public static void main(){
+    //  打印调用Person构造器，调用Student构造器
+    Student s=new Student();
+}
+
+
+[############## static关键字#############]
+
+静态成员变量的内存分配在方法区中，什么时候才会被回收
+static 修饰的字段和方法直接属于类
+
+static 修饰的成员变量，随着所在类被加载进JVM,也同时在[方法区]存储起来
+特点:
+static 修饰的内容属于类，被所有的对象共享(共同使用)
+
+注意:
+1>static修饰的方法中，不能使用this,super,存在类的时候不一定存在对象，所以静态方法中不能含有对象级别的成语那变量或方法
+2> static 修饰的方法或变量，应该使用类名访问，
+使用对象访问
+public class Dog{
+    public static int num=100;
+    public int age;
+
+    public void m1(){
+        System.out.println("实例方法");
+    }
+    public static void m2(){
+        System.out.println("静态方法");
+    }
+
+}
+
+public static void main(){
+    Dog d1=new Dog();
+    d1.gae=5;   
+
+    Dog d2=new Dog();
+    d2.gae=15;   
+
+    //访问非static方法
+    d1.m1();
+    d2.m1();
+    Dog.m1();//编译报错
+
+    //访问静态方法
+    d1.m2();//对象调用static方法,底层还是使用类名
+    Dog.m2();
+
+}
+
+
+静态内容
+    |---类名.静态内容--->最安全
+
+class A{
+    static String name="a的名字";
+}
+
+class B extends A{
+    static String name="b的名字";
+}
+
+public static void main(String[] args){
+    A a=new B();
+    //打印a的名字
+    System.out.println(a.name);
+}
+
+
+[############## final关键字############# 面试]
+
+修饰类: 不能再有子类，final修饰的类不能被继承
+修饰方法: 不能被子类重写(覆盖)
+修饰变量: 只能赋值一次
+        |---基本数据类型: 值不变
+        |---引用数据类型:地址值不变,里面的内容可以改
+
+public static final int MIN_VLALUE=10;//表示公共静态常量
+
+[############## 代码块 ############# 面试]
+直接用{}括起来的一段代码区域
+代码块
+        |----1.局部代码块，直接定义在方法里面的代码块，一般结合if和for等
+        |----2.初始化代码块,直接定义在类中，每次创建对象都会先执行初始化代码块，再执行构造器
+        |----3.静态代码块，使用static修饰的初始化代码块，静态代码块所在的类的字节码被加载进jvm时，执行static代码块，在开发中经常用来加载资源，加载配置文件等操作
+
+
+  public class Test{
+
+    该类被使用，只加载一次
+    static{
+        System.out.println("Test静态代码块");
+    }
+    创建对象执行一次
+    {
+        System.out.println("初始化代码块");
+    }
+    public Test(){
+        System.out.println("构造器");
+    }
+  }
+  class Demo{
+        static{
+             System.out.println("Demo静态代码块");
+        }
+        public static void main(String[] args){
+             System.out.println("main方法");
+             Test test=new Test();
+        }
+  }
+
+ 依次打印
+ Demo静态代码块
+ main方法
+ Test静态代码块
+ 初始化代码块
+ 构造器
+
+
+[############## 内部类 #############]
+
+    创建内部类是为了，内部类能直接使用外部类的数据和方法
+
+    public class A{
+        
+        public static class B{
+        }
+
+        方法内部类
+        public void test(){
+            class A{
+            }
+        }
+    }
+
+++++++++++匿名内部类+++++++++
+
+    使用父类构造器和接口来是实现,如果类是只使用一次则使用
+
+    new 父类名称([参数列表]){
+        重写父类方法
+    }
+    new 接口名称(){
+        实现接口方法
+    }
+    interface IUSB{
+        void swapData();
+    }
+
+    class MotherBoard{
+        public void pugin(IUSB usb){
+            usb.swapData();
+        }
+    }
+
+    public static void main(String[] args){
+        MotherBoard mb=new MotherBoard();
+        mb.pugin(new IUSB(){
+            public void swapData(){
+                System.out.print("小音箱");
+            }
+        });
+    }
+
+[#####################枚举类###############]
+
+public enum 枚举类名{
+    MEN,WOMEN,NEUTRAL
+}
+
+1> 定义的枚举类都是继承enum
+oridinal() ： 枚举对象的序号
+name()：常量的名字
+2> 枚举类不能定义对象
+
+
+------------------面试----------------------
+    ++++++静态代码块相关内容+++++
+    class A{
+        static{
+            System.out.println("A");
+        }
+    }
+    class B extends A{
+        static{
+            System.out.println("B");
+        }
+    }
+
+    B b=new B();
+
+    输出结果:AB
+    原因:子类构建之前先完成父类的构建,当一个子类被构建时，其所有的父类都会被构建

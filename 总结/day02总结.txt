@@ -1,0 +1,160 @@
+变量的概述
+一个存储空间,用于存储某一种类型的数据
+        
+                ----------------内存空间-------------
+                |                                                      |
+                |                          ------------            |
+                |     变量名     |    变量值   |           |
+                |                         ------------             |
+                |                                                      |
+                ---------------------------------------
+
+变量特点:
+1. 占内存存储区域的用于存储数据
+2. 有自己的名称和数据类型
+3. 可重复使用
+4. 可赋值可读取
+```
+    int a=0;  //定义一个变量a,并赋值为0
+```
+
+变量使用注意:
+1. 定义变量后需要赋值，局部变量需先赋值才能使用，赋值才为变量开辟内存空间
+2. 使用局部变量的作用域在{}内
+3. 使用局部变量时，在同一作用域中变量名不予许重复定义
+
+
+基本数据类型转换
+
+1. 自动类型转化(隐式类型转换):范围小的数据直接转换成范围大的数据类型
+2. 强制类型转换:范围大的数据直接转换成范围小的数据类型
+
+注意:
+boolean 类型不参与转换
+byte,short,char 相互之间不参与转换
+转换图:
+long----->float    (小数精确度比整数大) 
+
+
+
+ byte , short ,char   ------>  int ---->  long --> float--->double
+
+自动类型转换示例:
+
+     long longValue=17;     //   整数类型默认是int   int --->long
+     float floatValue=longValue;//   long----> float
+
+     byte byteValue=2;
+     int intValue=3;
+
+     //byte做运算时,表达式的结果出现自动提升
+     byte  result=byteValue+intValue;
+
+     //'A'是char类型,参加运算自动提升成int类型
+     System.out.println('A'+1 );//打印66 
+
+//编译器发现，如果一个常量在byte范围之内，编译器帮我们转型
+     char c=65;
+     byte b=10;
+     byte b=1000; //如果不在范围之内,编译器不自动转换
+         
+自动类型提升:
+1. byte,short,char   做运算时,自动提升为int类型，再做运算
+2. 表达式的最终结果类型，被提升为表达式中类型最高的类型
+
+强制类型转换:(不建议，会损失精度)
+语法格式:  范围小的数类型 变量名=  (范围小的数类型)范围大的数类型值
+
+示例:
+byte b=(byte)(a+b);         //将a+b的结果转换成byte
+
+int intValue=3.14;  //结果损失  0.14
+
+
+自增：
+前置++result：对result加1之后的结果进行运算,++在前，使用自增之后的值进行运算    ----> 先自增，再运算
+后置result++：对result变量加1，会拿result的原始值来做运算 ,++在后，先运算再自增      ----> 先运算，再自增
+
+
+示例:
+//先自增再运算
+int a=5;            
+int b=++a;
+//a=6,b=6
+
+//先运算，再自增
+int a=5;
+int b=a++;
+// a=6,b=5
+
+
+赋值运算符：
+                                                                                        结果
+    =                  赋值                              int a=2;                2
+    +=                加后赋值                     int a+=2;              4
+    -=                  减后赋值                    int a-=2;              0
+    *=                  乘后赋值                    int a*=2;             4
+    /=                  整除后赋值                 int a/=2;              1
+    %=                取余后赋值                 int a%=2;            0
+
+short s=5;
+s+=2;
+//此时相当于s=(short)(s+2);
+
+三目运算符
+    数据类型 变量=boolean 表达式?A结果:结果;
+如果boolean 表达式的结果:
+    true：结果是A
+    false：结果是B
+
+// 判断一个数是奇数还是偶数
+int num=99;
+Stirng result=num%2==0?"偶数":"奇数";
+System.out.println(result);
+
+//求出99和20之间的最大的一个值
+int num1=99;
+int num2=20;
+int max=num1>num2?num1:num2;
+System.out.println(max);
+
+//一共有55条数据,每页显示10条数据,一共分多少页
+总页数 % 每页的页数==0?总页数/每页的页数:总页数/每页的页数+1;
+
+        int total=55;
+        int pageSize=10;
+        int totalPage=total%pageSize==0?total/pageSize:total/pageSize+1;
+        System.out.println(totalPage);
+
+
+逻辑运算符
+
+        &               与                       只要有false,结果为false                       
+        |                或                        有true,结果为true
+        !                 非                        取反
+        ^               异或                  相同的是false,相异的是true
+        &&           短路与            (效率高)
+        ||              短路或
+
+                与
+        false & false：false
+        true & false： false
+        false & true： false
+        true & true：   true
+
+                或
+        false | false：false
+        true | false：  true
+        false | true： true
+        true | true：   true
+
+                取反
+               ! true :false
+               ! false :true
+
+        & :左边表达式无论真假,&右边的表达式都会进行运算
+        && : 左边表达式为true,右边的表达式会进行运算
+                左边表达式为false,右边的表达式不会进行运算
+
+       短路: 前面的条件能决定最终的结果
+

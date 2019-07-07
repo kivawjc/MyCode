@@ -1,0 +1,151 @@
+元注解:用于描述注解的注解
+
+@Target():表示描述的注解可以放在哪个位置
+    TYPE:类，接口
+    FIELD:字段
+    METHOD:方法
+
+@Retention(RetentionPolicy.SOURCE):表示注解可以保存到哪个时期
+SOURCE：只存活在源码时期，编译字节码之后，不存在
+        |----辅助编译，写源码时有作用
+CLASS：能存活到字节码时期,源码时期由，字节码时期有，加载到内存就没有了
+
+RUNTIME:源码，字节码(编译)，运行时期都存活
+        |----一般自定义注解，需要使用反射赋予功能，都要使用runtime 时期
+
+@Documented()会存到Api文档中,表示过时
+@inherited:表示标注的标签可以被子类继承
+
+需求:定义一个VIP注解，设置存活时间，以及所在位置
+
+|---- 注解时一个特殊的接口,在注解中的方法叫属性,方法返回值类型就是属性值的类型
+
+|----可以给属性设置默认值
+|---如果要写的属性只有一个，并且属性名=value,可以省略属性名
+|---返回值类型，不包括void ,只能时基本数据类型,String,Class,枚举,数组
+
+|----数组类型使用方式 属性名={属性值1，属性值2...}
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME):
+public @interface VIP{
+    int age()default 18;
+    String name(); 
+    String[] hobby();
+}
+
+@VIP(age=18,name="decade",hobby={"java"}s)
+public class Employee{
+    
+}
+
+
+内省:专门用来获取和操纵javabean中的属性
+可以查看属性名，属性类型
+
+核心类:Introspector，可以获取javabean的方法，事件和属性
+
+常用Api： 
+Introspector:获取javabean的描述对象
+            |--getBeanInfo
+BeanInfo:获取javabean的方法/事件/属性的描述器
+            |--getPropertyDescriptors():获取javabean的属性描述器
+PropertyDescriptor :很多描述属性的方法
+            |---getPropertyType()  
+            |---getReadMethod()  获取get方法
+            |---getWriteMethod()  获取set方法
+            |---getName() 获取属性名
+
+class Person{
+    
+    private String name;
+    private int age;
+
+    set/get
+
+}
+
+
+注意：
+Introspector:可以使用stopclass ,可以指定只内省到继承树中哪个父类为止的属性,只包括到前面，不包括到后面
+
+public void testIntrospector(){
+    通过内省，获取Person的属性，创建对象，操作属性
+    获取javabean的描述对象
+    BeanInfo beanInfo=Introspector.getBeanInfo(Person.class,Object.class);
+    通过BeanInfo获取属性描述器
+    Object obj=Person.class.newInstance();
+    PropertyDescriptor[] pds=beanInfo.getPropertyDescriptors();
+    通过属性描述器，获取和操作属性
+    for(PropertyDescriptor p:pds){
+        Stirng propertyName=p.getName();
+        p.getPropertyType();
+
+        p.getReadMethod();
+       Method m=p.getWriteMethod();
+       if("age".equals(propertyName)){
+            m.invoke(obj,10);
+       }else if("age".equals(propertyName)){
+            m.invoke(obj,"decade");
+       }
+    }
+
+}
+
+
+class BeanUtil{
+    
+    private BeanUtil(){}
+
+    public static Map<String,Object> bean2map(Object obj){
+    Map<String,Object> map=new HashMap();
+ BeanInfo beanInfo=Introspector.getBeanInfo(obj.class,Object.class);
+ PropertyDescriptor[] pds=beanInfo.getPropertyDescriptors();
+  for(PropertyDescriptor p:pds){
+        Stirng propertyName=p.getName();
+        Method m=p.getReadMethod();
+        Object propertyValue=m.invoke(obj);
+        map.put("propertyName",propertyValue);
+    }
+        return map;
+    }
+
+    
+
+     public static <T> T map2Bean(Map<String,Object>  map,Class<T> clz){
+     Object obj=clz.newInstance();
+      BeanInfo beanInfo=Introspector.getBeanInfo(clz,Object.class);
+    PropertyDescriptor[] pds=beanInfo.getPropertyDescriptors();
+      for(PropertyDescriptor p:pds){
+            Stirng key=p.getName();
+            Object value=map.get(key);
+            Method m=p.getWriteMethod();
+
+            Object propertyValue=m.invoke(obj);
+            Method m=pd.getWriteMethod(obj,value);
+            m.invoke(obj,value);
+      }
+        return obj;
+    }
+
+
+
+}
+
+
+[##############xml#############]
+配置文件:xml和properties解决硬编码
+xml主要用来传输数据，作为一个配置文件存在,xml保存数据，从xml解析数据
+
+xml语法:
+1. xml严格区分大小写
+2. 在xml中直接属于文档的只能有一个，有且只有一个根标签
+3. 标签中可以有属性,多个属性用空格隔开
+4. 允许标签嵌套，但不允许标签嵌套
+
+
+NodeList getElementsByTagName(String name) 
+          以文档顺序返回具有给定标记名称的所有后代 Elements 的 NodeList。 
+
+NodeList getElementsByTagName(String tagname) 
+          按文档顺序返回包含在文档中且具有给定标记名称的所有 Element 的 NodeList。 

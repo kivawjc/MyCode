@@ -1,0 +1,99 @@
+使用Arrays 打印数组
+
+int[] arr=new int[]{1,5,8,1,5,5};
+System.out.println(Arrays.toString(arr));
+
+
+实现int 类型数组的拷贝
+方法参数:
+1> 源数组    srcArr
+            从原数组中哪一个位置开始拷贝    srcPos
+            拷贝元素数量      length
+2> 目标数组   destArr
+            目标数组中开始粘贴的位置     destPos
+
+int[] srcArr=new int[]{1,2,5,4,8,6,12,52};
+int[] descArr=new int[10];
+
+public void arrayCopy(int[] srcArr,int srcPos,int[] descArr,int destPos,int length){
+    
+    for(int i=0;i<length;i++){
+        descArr[destPos+i]=srcArr[srcPos+i];
+    }
+}
+
+
+冒泡排序原理:
+对未排序的元素从头到尾一次比较相邻元素的大小关系
+例如: {4,5,9,2,4,1}
+第一轮: 比较5次  {4,5,2,4,1,   9}
+第二轮：比较4次 {4,2,4,1, 5,9}
+第三轮：比较3次 {,2,4,1,  4,5,9}
+//第一轮
+for(int i=0;i<length-1;i++){   //最大length-2
+    if(arr[i]>arr[i+1]){
+        swap(arr,i,i+1);
+    }
+}
+//第二轮
+for(int i=0;i<length-2;i++){   //最大length-3
+    if(arr[i]>arr[i+1]){
+        swap(arr,i,i+1);
+    }
+}
+//第三轮
+for(int i=0;i<length-3;i++){   //最大length-4
+    if(arr[i]>arr[i+1]){
+        swap(arr,i,i+1);
+    }
+}
+
+
+
+for(int time=1;time<arr.length;time++){
+        for(int i=0;i<length-time;i++){   //最大length-2
+            if(arr[i]>arr[i+1]){
+                swap(arr,i,i+1);
+            }
+        }
+}
+
+
+public void swap(int[] arr,int index1,int index2){
+    int temp=arr[index1];
+    arr[index1]=arr[index2];
+    arr[index2]=temp;
+}
+
+
+二分法查找
+注意:前提时数组元素是有序的
+
+//查询一个有序数组元素为8的索引是多少
+int[] arr=new int[]{1,2,3,4,5,6,7,8,9};
+
+
+public void binarySearch(int[] arr,int key){
+    int low=0;    //最低索引
+    int high=arr.length-1;   //最高索引
+    int mid=0;
+
+    // 使用while循环时，不知道循环次数，只知道条件
+    while(low<=high){
+           mid=(low+high)/2;   //中间索引
+            if(key>arr[mid]){
+                    low=mid+1;
+            }else if(key<arr[mid]){
+                    high=mid-1;
+            }else{
+                return mid;
+            }
+    }
+    return -1;
+}
+
+//使用Arrays进行查找
+Arrays.binarySearch(arr,5);
+
+ctrl+shift+o :引入包
+

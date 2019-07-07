@@ -1,0 +1,274 @@
+反射:在运行时期，动态获取某一个类中的成员信息(构造器，方法，字段，内部类，接口，父类等)
+
+把类中的每一个成员都描述成一个对象
+
+Class类:在JVM中的一份份字节码文件,用来描述类的类
+
+-----获取字节码对象:Class对象
+同一个类在虚拟机中只存在一份字节码对象
+
+ 方式1：使用class属性(所有的数据类型都有)
+ Class clazz=数据类型.class;
+
+ 方式2：通过对象的getClass方法来获取,getClass()是object的方法
+ Date d=new Date();
+ Class clazz=d.getClass();
+
+ 方式3：使用Class类的静态方法forName()
+ Class clazz=Class.forName("完整类名");
+
+
+ ------基本类型的字节码对象
+ 九大内置class实例,Jvm预先提供好的Class实例
+ byte,short,int,long,float,double,char,boolean,void
+
+在8大基本数据类型的包装类中，都有一个常量:TYPE,用于返回该包装类对应基本类的字节码对象
+
+Integer.class 和 int.class 是不同的数据类型  
+Integer.TYPE==int.class   (true)
+
+-------数组的字节码对象
+数组属于引用类型，也属于对象，可以调用Object中的方法，
+方式1：数组类型.class
+方式2：数组对象.getClass()
+
+int[] arr={1,2,3,4};
+Class clazz1=int[].class;
+Class<int[]> clazz2=arr.class;
+clazz1==clazz2;
+
+注意:
+所有的具有相同的维数和相同元素类型的数组共享同一个字节码对象,和元素无关
+
+---------需求:通过反射获取一个类的构造器
+1> 获取该类的字节码对象
+2> 从该字节码对象中去找需要获取构造器
+
+class User{
+    public User(){}
+    public User(String name){}
+    private User(String name,int age){}
+}
+
+Class<User> clazz=User.class;
+
+--获取多个
+clazz.getConstructors();获取类的所有公共的构造器
+clazz.getDeclaredConstructors()，获取所有的构造器和访问权限无关
+
+--获取单个
+getConstructor获取公共 的构造器
+clazz.getConstructor();   //无参
+clazz.getConstructor(String.class);
+clazz.getConstructor(String.class,int.class);
+getDeclaredConstructor获取所有的构造器
+clazz.getDeclaredConstructor(String.class);
+clazz.getDeclaredConstructor(String.class,int.class);
+
+----使用构造创建对象
+在框架中使用string字符串提供类信息，框架使用反射创建对象
+如spring中
+<bean name="user" class="user的完整类名" method="方法名"></bean>
+
+-----使用反射创建对象----
+1. 找到构造器所在的类的字节码对象
+2. 获取构造器对象
+3. 使用反射，创建对象
+
+class User{
+    public User(){}
+    public User(String name){
+        syso("构造器被调用"+name);
+    }
+    private User(String name,int age){
+        syso("构造器被调用"+name+age);
+    }
+}
+
+Class clazz=User.class;
+Constructor con=clazz.getConstructor();
+User user=con.newInstance();
+
+con=getDeclaredConstructor(String.class);
+setAccessible(true);  //设置可访问权限
+con.newInstance("decade",18);
+
+调用公共的无参构造器
+User user=clazz.newInstance();
+
+
+-------使用反射获取类中的方法
+1. 获取方法所在类的字节码对象
+2. 调用方法
+
+getMethods:获取包括自身和继承过来的所有的public方法
+getDeclaredMethod: 获取自身类中所有的方法(不包括继承的和访问权限无关)
+
+public Class User{
+    public void doWork(){}
+    public void doWork(String name){}
+    private void sayHello(String name,int age){}
+}
+
+Class clz=User.class();
+Method[] ms=clz.getMethods();
+Method[] ms = clz.getDeclaredMethod();
+
+--获取指定方法
+Method m=clz.getMethod("方法名称",方法参数);
+m=clz.getMethod("doWork");
+m=clz.getMethod("doWork",String.class);
+m=clz.getDeclaredMethod("sayHello",String.class,int.class);
+
+---使用反射调用方法
+Class clz=User.class();
+m=clz.getMethod("doWork");
+
+返回值=m.invoke(所属对象,参数);
+m.invoke(clz.newInstamce(),"decade");
+
+
+m=clz.getDeclaredMethod("sayHello",String.class,int.class);
+设置可访问的权限
+m.setAccessible(true);
+String result=m.invoke(clz.newInstamce(),"decade",18);
+
+---使用反射在多态中访问子类的方法
+Object obj=new Date();
+Method method=obj.getClass().getMethod("toLocalString");
+Object d=method.invoke(obj);
+
+----------使用反射调用静态方法
+静态方法属于对象级别，调用静态方法时，将invoke的第一个参数设为null 
+
+--------调用数组参数(可变参数)的方法-------
+class Employee{
+    public static void doWork(int... arr){
+            syso(Arrays.toString(arr));
+    }
+    public static void doWork(String... arr){
+            syso(Arrays.toString(arr));
+    }
+}
+
+Class clz=Employee.class;
+
+情况一:数组元素是基本类型
+Method m=clz.getMethod("doWork",int[].class);
+m.invoke(null,new int[]{1,2,35,5});
+m.invoke(null,new Object[]{new int[]{1,2,35,5})});
+
+
+情况二:数组的元素类型是引用类型
+m=clz.getMethod("doWork",String[].class);
+m.invoke(null,new Object[]{new String[]{"A","B","C"}});
+
+总结:调用方法时把实际参数作为Object数组的元素即可
+Method 对象.invoke(方法底层所属对象,new Object[]{实参})
+
+
+-----如果方法参数中有泛型，自动提升为Object
+
+------------反射其他Api--------
+
+获取修饰符 int getModifiers()
+
+不同的修饰符表示不同的常量
+Class clazz=Test1.class();
+int mod=clazz.getModifiers();
+String m=Modifier.toString(mod);
+
+类的名称
+Test1.class.getName()      
+Test1.class.getSimpleName()
+
+获取该类的包
+Test1.class.getPackage().getName()
+
+获取类的class
+Class clz=Test1.class.getSuperclass();
+获取类实现的接口
+Test1.class.getInterfaces()
+
+枚举不接受反射访问
+
+-------------实现任意类型数组的拷贝操作----
+Object arr=new int[]{1,2,3,4};
+
+设置数组指定索引元素值
+Array.set(arr,2,100);
+获取指定索引数据元素
+int val=Array.getInt(arr,2);
+
+----------------
+
+int[] src={1,2,3,4,5,6,7,8,9};
+int[] dest=new int[10];
+
+arraycopy(src,3,dest,2,5);
+
+
+    
+Object 不能获得数组的长度，使用Array.getLength()
+
+  public static  void arraycopy(Object src,  int  srcPos, Object dest, int destPos, int length){
+
+    if(src==null||dest==null){
+            throw new RunTimeException("数组不能为空");
+    }
+    if(!src.getClass().isArray()||!dest.getClass().isArray){
+        throw new ArrayStoreException("源和目标必须都是数组");
+    }
+    if(srcPos<0||destPos<0||length<0
+            ||srcPos+length>Array.getLength(src)
+            ||destPos+length>Array.getLength(dest)){
+                throw new IndexOutOfBoundException("索引越界");
+    }
+
+    if(src.getClass().getComponentType()!=dest.getClass().getComponentType()){
+        throw new ArrayStoreException("源和目标类型必须相同");
+    }
+
+    需要拷贝的元素
+    for(int index=srcPos;indexf<srcPos+length;index++){
+        获取需要拷贝的元素
+        Object val=Array.get(src,index);
+        给目标数组设置元素
+        Array.set(dest,destPos,val);
+        destPos++;
+    }
+
+  }
+
+
+  ------------加载资源文件路径-----------
+  加载properties文件，只能使用Properties的load方法
+   方式1:
+   使用绝对路径的方式加载(不推荐使用)
+
+   Properties p=new Properties();
+   InputStream in=new FileInputStream("xxxr/db.properties");
+   p.load(in);
+
+   方式2:
+   使用相对路径, 相对于classpath的根路径(字节码输出目录),使用ClassLoader，类加载器默认从根目录中获取
+
+   Properties p=new Properties();
+
+   获取加载器的第一种方式
+   ClassLoader loader=Test.class.getClassLoader();
+   通过当前线程获取类加载器
+   ClassLoader loader=Thread.currentThread().getContextClassLoader();
+
+   InputStream in=loader.getResourceAsStream("db.properties");
+   p.load(in);
+
+   方式3:使用相对路径-相对于当前加载资源文件的字节码路径
+
+   Properties p=new Properties();
+   InputStream in=Test.class.getResourceAsStream("db.properties");
+   p.load(in);
+
+   使用的是Test 的字节码路径去寻找db.properties文件
+
+

@@ -1,0 +1,160 @@
+## IO流的使用
+
+---
+
+* GBK:中文占俩个字节
+* ANSI：简体中文中的操作系统ANSI就是GBK
+* UTF-8：是一种针对Unicode 的可变长度字符编,中文占3个字节
+
+```
+注意:
+1> 存储字母和数字无论是什么字符集都占1个字节.
+2>存储汉字，GBK 家族占两个字节，UTF-8家族占 3个字节。
+3>不能使用单字节的字符集（ASCII、ISO-8859-来存储中文，否则会乱码。
+```
+
+#### 编码解码
+```
+
+public static void main(String[] args){
+    //编码   String  ---->  byte[]
+    String str="我是神";
+    //按照指定码表编码
+    byte[] arr=str.getBytes("UTF-8");
+    System.out.println(Arrays.toString());
+
+    //解码  byte[]  ----->String
+    byte[] arr={-50,-46,-80,-60};
+    String str=new String(arr);
+    System.out.println(str);
+}
+
+```
+
+解决乱码方案:
+先将错误的字符串重新编码，再使用正确的字符集解码
+
+
+
+IO 概述
+IO属于相对过程，从程序角度来看
+程序需要读取数据：文件---->程序，输入操作
+程序保存是数据： 程序----->文件,输出操作
+
+IO流的分类:
+1> 按流动方向:
+        |----> 输入流和输出流
+2> 按传输数据单位
+        |---->字节流和字符流
+
+-----
+输入流   InputSteam            Reader
+输出流   OutputStream       Writer
+注意:
+都是抽象类不能直接创建对象
+
+----FileWriter类
+ FileWriter  ：方便写入字符流
+
+ ```
+ //在当前项目下,文件不存在会创建文件
+ FileWriter w=new FileWriter("a.txt");
+//从程序中输出数据到b.txt文件中
+w.write("hello world");
+//刷新数据 ---->将缓冲区的数据刷出
+w.flush();
+//释放资源--需要关流才能释放对象
+w.close();
+ ```
+
+\r\n  : 进行换行,\n 换行,\r切换到行头,由于不同系统有不同的换行符，因此最好俩个都写
+ ----FileReader
+ FileReader：将数据输入到程序
+
+ read()  -> 读取一个字符数据，返回一个int类型字符数据，如果返回-1则是读到末尾
+
+ read(char数组)->返回此次读取数据的有效长度,当返回-1表示没有读取完毕
+ ```
+ -----------read()---------------
+ // 创建流对象
+ FileReader reader=new FileReader("a.txt");
+//读取数据
+int a=reader.read();
+System.out.println((char)a);
+reader.close();
+
+---------------连续读取----------------
+FileReader reader=new FileReader("书籍");
+int len=-1;
+while((len=reader.read())!=-1){
+    System.out.print((char)len);
+}
+reader.close();
+
+
+----------使用char[]读取:--------------
+一次读取多个字符，长度是字符的个数
+FileReader reader=new FileReader("书籍");
+char[] cs=new char[1024];
+int len;
+String str=null;
+while((len=reader.read(cs))!=-1){
+    str=new String(cs, 0, len);
+    System.out.print(str);
+}
+reader.close();
+
+ ```
+
+ read() 和 read(数组) 的区别
+ 1> read() 读取一个字符,返回字符的编号
+ 2>read(数组)读取多个字符，返回读取的有效长度
+
+------------字节流-----------------
+如果非文本(音视频图片等)采用字符流操作，会将数据损坏
+此时只能采用字节流
+
+
+```
+InputStream in=new FileInputStream("gril06.jpg");
+        OutputStream out=new FileOutputStream("gril06副本.jpg");
+        int len;
+        byte[] bytes=new byte[1024];
+        while((len=in.read(bytes))!=-1){
+            out.write(bytes, 0, len);
+        }
+        in.close();
+        out.close();
+```
+
+```
+操作文本需要转换
+OutputStream out=new FileOutputStream();
+out.write('9');
+out.write('9');
+out.write("我是神".getBytes());
+out.close();
+```
+
+将整数转成字符存放
+```
+public void test06() throws Exception{
+        int[] arr = {-49, -21, -78, -69, -75, -67, -80, -55, 32, -48, -95, -55, -75, -71, -49};
+        OutputStream out=new FileOutputStream("hello.txt");
+        for(int i:arr){
+            out.write((i+" ,").getBytes());
+        }
+        out.close();
+    }
+```
+
+字节读取
+```
+InputStream in=new FileInputStream();
+byte[] b=new byte[2048];
+int len;
+while((len=in.read(b))!=-1){
+    String str=new String(b,0,len);
+    System.out.ptintln(str);
+}
+```

@@ -1,0 +1,83 @@
+
+java 三大平台:
+        1. javase : 标准java 开发平台
+        2. javame : java 微型平台，用于开发移动设备上的软件
+        3. javaee : 用于web开发
+
+不跨平台:
+            c 语言代码在不同系统上运行，需要在不同平台编译器上编译成不同的编译程序在不同平台上运行.跨平台
+
+(面试)
+java跨平台:(一次编译到处运行)
+            java 文件编译成与平台无关的字节码文件,字节码文件需要在JVM上运行,同一份字节码文件在不同平台上运行，需要在不同平台上安装JVM。
+
+java 文件编译运行机制:
+                                                         (字节码文件)
+                                                        生成.class文件
+        java 文件  --->   编译工具--------------------------> 启动JVM,加载进JVM------------------------>程序运行结果 
+                                    javac.exe                                     java.exe
+
+jdk : java开发工具,包含java 开发工具的所有工具( javac.exe,  java.exe)，jdk中包含jre，安装jdk后不需要安装jre
+jre:  java 运行环境,运行java程序需要jre的支持，jre包含JVM
+jvm:java 虚拟机，运行java 程序的虚拟计算机，jvm不跨平台，在不同系统平台安装不同平台的jvm
+
+安装jdk注意事项:
+    1. 安装jdk不需要安装jre；
+    2. 不直接安装在c盘目录,安装目录不包含中文
+
+配置jdk 环境变量:
+    配置path环境变量: 能够在任何地方使用javac ，Java开发工具    
+
+    属性->高级系统设置->环境变量
+
+    环境变量                                 目录
+    JAVA_HOME                   C:\Java\jdk1.8.0_151   (jdk的安装目录)
+    PATH                                %JAVA_HOME%\bin
+    CLASSPATH                   %JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar
+
+
+第一个程序 HelloWorld
+1. 新建编写HelloWorld.java 文件
+            
+public class HelloWorld{
+        public static void main(String[] args){
+                System.out.println("Hello World");
+        }
+}
+
+2. 在cmd 中切换到文件所在目录
+      使用javac HelloWorld.java 编译生成字节码文件 HelloWorld.class
+      使用java HelloWorld 运行字节码文件
+
+
+java 基本语法:
+1. java 严格区分大小写;
+2. 一个java 文件中可以定义N个类,源文件中多个类编译后会生成N个字节码文件;只能有一个类使用public修饰,要求源文件的名称与public 修饰的类相同
+3. 一个类需要运行，必须写main方法,main方法是程序的入口
+
+
+标识符:定义类名,方法名,变量名
+1. 只能包含字母数字，下划线,$(不能使用数字开头)
+2. 大小写敏感
+3. 不能使用关键字和保留字m
+4. 不能使用类名
+
+
+数据类型
+        基本数据类型
+                            |-----整型  :                    字节
+                                        byte                      1
+                                        short                     2
+                                        int                         4
+                                        long                      8          long类型常量在后加L,如20L  (默认十进制是int)
+                            |-----小数类型:
+                                        float                      4          float 类型常量在后加f,如3.1f(默认小数类型是double)
+                                        double                 8
+                            |-----字符型:char             2
+                            |----- 布尔型:boolean     (1bit)
+
+
+        引用数据类型
+                            |------类
+                            |------数组
+                            |------接口
