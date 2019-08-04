@@ -39,7 +39,7 @@ spring.data.elasticsearch.cluster-nodes=localhost:2300
 ```
 
 ### 组件介绍
-```
+```java
 ElasticsearchTemplate：框架封装的用于便捷操作Elasticsearch的模板类
 ElasticsearchRepository：框架封装的用于便捷完成CRUD的接口
 NativeSearchQueryBuilder：用于生成查询条件的构建器，需要去封装各种查询条件
