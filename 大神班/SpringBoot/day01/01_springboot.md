@@ -50,9 +50,9 @@ public class OtherBean {
 
 ## AnnotationConfig 方式配置IoC
 
-> @Configuration : 在类上贴注解表示该类取代applicationContext 配置<br>
-@Bean : 在Spring的配置类的方法上贴该注解表示该方法的返回的对象交给Spring容器管理,替代applicationContext.xml中的bean标签<br>
-@ComponentScan : 配置注解扫描,默认值是当前配置类所在的包
+* @Configuration : 在类上贴注解表示该类取代applicationContext 配置<br>
+* @Bean : 在Spring的配置类的方法上贴该注解表示该方法的返回的对象交给Spring容器管理,替代applicationContext.xml中的bean标签<br>
+* @ComponentScan : 配置注解扫描,默认值是当前配置类所在的包
 AnnotationConfigApplicationContext: 该类是ApplicationContext接口的实现类,该对象是基于AnnotationConfig的方式来运作的Spring容器 <br>
 
 ```java
