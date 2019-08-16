@@ -6,7 +6,7 @@
 步骤:
 1. 需要添加springCloud 可选依赖
 2. 导入openfeign依赖
-3. api 创建一个接口ProductFeignApi
+3. api 创建一个接口ProductFeignApi,@FeignClient
 4. server 创建一个ProductFeignClient,实现ProductFeignApi接口,同时作为controller类
 5. order-server 中启动类中不需要RestTemplate
 6. 开启注解扫描器, 需要注意扫描器是扫描当前包下的注解

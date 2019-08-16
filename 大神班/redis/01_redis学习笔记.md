@@ -1,5 +1,6 @@
 ## Redis
 
+官网学习 : https://www.redis.net.cn/tutorial/3501.html
 
 ### NOSql 和关系型数据库的区别
 * 在关系型数据库数据都是存放在表中，有连接查询，主键，外键等概念
@@ -18,7 +19,7 @@ Redis 是提供高性能的键值存储的Nosql的数据库,先将数据存放�
 
 #### Redis 支持的数据类型
 Redis支持五种数据类型：
-
+7
 string（字符串）:
 是 redis 最基本的类型,一个 key 对应一个 value
 

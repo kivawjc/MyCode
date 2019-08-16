@@ -13,7 +13,6 @@
 </dependency>
 ```
 
-
 HystrixCommand : 当方法调用失败，调用fallbackMethod走降级方法，返回兜底数据,具备熔断功能，当方法出错了很多次，不会调用当前方法直接走降级方法
 fallbackMethod : 指定出现熔断后需要调用的方法,定义的方法一定要和当前方法签名保持一致
 
@@ -125,3 +124,4 @@ public Object saveFail(Long productId,Long uid){
        return new Order();
    }
 ```
+

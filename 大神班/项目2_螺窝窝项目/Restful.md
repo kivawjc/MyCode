@@ -83,8 +83,9 @@ OPTIONS：获得客户针对一个资源能够实施的操作；这个主要是�
 
 GET /zoos：列出所有动物园
 POST /zoos：新建一个动物园
-GET /zoos/ID：获取某个指定动物园的信息（ID即指定动物园id）
-PUT /zoos/ID：更新某个指定动物园的信息（浏览器端需要提供该动物园的全部信息）
+GET /zoos/ID：获
+
+端需要提供该动物园的全部信息）
 PATCH /zoos/ID：更新某个指定动物园的信息（浏览器端需要提供该动物园的部分信息）
 DELETE /zoos/ID：删除某个动物园
 GET /zoos/ID/animals：列出某个指定动物园的所有动物（animals为二级资源路径）

@@ -10,7 +10,7 @@ springCloud 是基于SpringBoot提供一套微服务的解决方案,包括服务
 
 SpringCloud 利用SpringBoot开发便利性，简化了分布式系统基础设施的开发，SpringCloud为开发人员提供了快速构建分布式系统的工具,包括配置管理
 
-SpringCloud 是分布式架构西啊的一站式解决方案，是各个微服务架构落地技术的集合体，俗称微服务全家桶
+SpringCloud 是分布式架构的一站式解决方案，是各个微服务架构落地技术的集合体，俗称微服务全家桶
 
 ### SpringClound和SpringBoot是什么关系
 * SpringBoot 专注于快速方便的开发单个个体微服务

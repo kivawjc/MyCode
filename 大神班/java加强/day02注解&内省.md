@@ -1,41 +1,44 @@
-### 注解&内省
----
-##### 为什么使用注解
+## 注解&内省
+
+
+### 为什么使用注解
 * 使用xml配置需要做大量的工作,会导致xml代码臃肿
 * 可以使用注解来解决xml配置臃肿的问题
 
-##### 什么是注解
+### 什么是注解
 * 在java5之后，开始对元数据进行支持,可以用来描述其他数据的一种数据
 * 使用接口 Annotation表示注解
 
-##### 常见的注解
+### 常见的注解
 
-```
+```java
 @Test : 用来描述一个测试方法，具备可以测试的功能
 @Override: 限定覆写父类方法
 @SuppressWarings :抑制编译器发出的警告,@SuppressWarings(value="all")
 @Deprecated : 标记是过时的Api
 ```
 
-##### 注解的定义格式
-```
+### 注解的定义格式
+```java
 public @interface Override{
 
 }
 ```
 
-##### 注解的使用语法
+### 注解的使用语法
+
 @ 注解名(属性名1=值1,属性名2=值2)
 
-##### 为什么注解可以具有一些功能
-> 需要有三方程序通过反射给注解赋予功能
+
+### 为什么注解可以具有一些功能
+* 需要有三方程序通过反射给注解赋予功能
 例如，重写方法是三方程序通过反射获取方法所在类的父类是否具有这个方法，如果没有编译不通过
 
-##### 元注解
+### 元注解
 * 注解:用来约束其他程序的(方法，字段等)
 * 元注解:元注解是用来约束注解的注解（包括约束注解可以修饰的位置,注解保存的时期）
 
-```
+```java
 @Target:表示注解可以用来贴在哪个位置
 ElementType.FIELD :只能修饰字段
 ElementType.METHOD:修饰方法
@@ -49,10 +52,9 @@ CLASS   : 字节码时期,能在字节码中存在
 RUNTIME : 运行时期存在; 源码，字节码(编译)，运行时期都存活
 
 如果要用反射给注解赋予功能使用RUNTIME,自定义注解都要使用这个值
-
 ```
 
-#### 自定义注解
+## 自定义注解
 需求:
 
 语法格式:
@@ -62,7 +64,7 @@ RUNTIME : 运行时期存在; 源码，字节码(编译)，运行时期都存活
 4. 数组类型，值需要用{}
 5. 属性类型只能使用基本数据类型，String,Class,注解，枚举等，不能使用void
 
-```
+```java
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface VIP{
@@ -104,13 +106,13 @@ public class User(){
 }
 ```
 
-##### 注解和xml的选用
+### 注解和xml的选用
 * 使用注解可以取代臃肿的xml配置文件
 * 使用注解做配置其实是一种硬编码的方式
 
 
-## ---javabean--
-##### 什么是javabean
+## javabean
+#### 什么是javabean
 在java中常见的可重用的组件,遵循一定的规范
 
 1. 类必须使用public修饰
@@ -118,19 +120,19 @@ public class User(){
 3. 字段都是私有化的
 4. 提供get/set方法
 
-##### javabean中重要成员:
+#### javabean中重要成员:
   * 方法
   * 属性(property)
 
 * 字段是成员变量，属性是get/set方法推导出的
 * 标准的set/get方法，去掉set/get,首字母小写
 
-#### 内省
+## 内省
 * 在JDK中，提供了一个专门用来操作javabean的属性的工具类 Introspector
 
 核心类:Introspector，可以获取javabean的方法，事件和属性
 
-##### 常见Api
+#### 常见Api
 ```java
 Introspector : 获取javabean的描述信息
     |----getBeanInfo(Class<?> beanClass)
@@ -190,8 +192,9 @@ class IntrospectorTest{
 }
 ```
 
-#### javabean 和 map 的转换
-###### 为什么要把javabean和bean进行转换
+### javabean 和 map 的转换
+
+#### 为什么要把javabean和bean进行转换
 场景:在web开发中，请求参数封装到Map中，需要将map装成数据bean类
 
 ```java

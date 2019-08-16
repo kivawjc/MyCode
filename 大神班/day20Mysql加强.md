@@ -78,7 +78,6 @@ select * from emp where ename LIKE '_M%'
 
 
 
-
 ---
 
 #### 内连接查询
@@ -105,7 +104,7 @@ and e.sal BETWEEN s.losal AND s.hisal
 
 显示内连接:(inner 可以省略)</br>
 
-```java
+```sql
 语法:
 select * from A inner join B on 条件
 
@@ -128,7 +127,7 @@ ON e.sal BETWEEN s.losal AND s.hisal
 * 右外连接查询(RIGHT JOIN):  查询出JOIN右边表中所有数据,左边表如果不匹配使用NULL填充.
 
 
-```java
+```sql
 -- 左外连接 （保持左表的完整性）
 -- 1 查询出公司所有员工的姓名和所属部门
 select e.empno,e.ename,d.deptno,d.dname from emp e
@@ -160,7 +159,7 @@ WHERE e.comm is NOT NULL
 2. 列也必须拥有兼容的数据类型
 3. 每条 SELECT 语句中的列的顺序必须相同。
 
-```
+```sql
 -- 全外连接
 -- 需求:查询所有员工的名字和部门的名称(无论员工有没有部门/部门有没有员工)
 SELECT e.ename,d.dname from emp e LEFT JOIN dept d ON e.deptno=d.deptno
@@ -173,7 +172,7 @@ SELECT e.ename,d.dname from emp e RIGHT JOIN dept d ON e.deptno=d.deptno
 #### 自连接
 * 自连接查询,将一张表看成是两张表使用别名区分.
 
-```
+```sql
 -- 查询员工名称和其对应经理的名称
 select e.ename,m.ename from emp e
 inner join emp m on e.mgr=m.empno

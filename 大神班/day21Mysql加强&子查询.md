@@ -115,7 +115,6 @@ GROUP BY deptno) temp
 on temp.deptno=d.deptno
 ```
 
-
 ---
 
 
@@ -155,7 +154,6 @@ delete from product
 where dir_id=
 (select id from productdir where dirName='有线鼠标')
 ```
-
 
 ---
 
@@ -222,7 +220,6 @@ where dir_id=
 
 
 
-
 ---
 
 #### 乐观锁
@@ -245,7 +242,7 @@ where dir_id=
 ![](assets/day21Mysql加强&子查询-4c22ed15.png)
 
 
-```
+```sql
 begin；
 select balance,version from account where id=1;
 update account set balance =balance+500,version=version+1

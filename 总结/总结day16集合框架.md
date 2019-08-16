@@ -179,7 +179,7 @@ class Demo{
 }
 ```
 
-##### Comparable接口实现排序
+### Comparable接口实现排序
 
 比较规则，拿当前元素和另一个元素做比较：
 
@@ -197,7 +197,7 @@ this == o|返回 0|此时认为两个对象为同一个对象,不添加
 1> 需要实现Comparable接口才能存放在TreeSet中
 
 
-```
+```java
 public class User implements Comparable<User>{
 
 	private String name;
@@ -249,7 +249,7 @@ class Test{
 
 需求:修改String 类型数据类型按照
 
-```
+```java
 
 class Test{
   public static void main(String[] args) {

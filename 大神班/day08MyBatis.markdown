@@ -36,7 +36,7 @@ ORM 思想:
 
 #### 准备工作
 ###### 1. 创建数据表  (R)
-```
+```sql
 create table user(
 id bigint primary key auto_increment,
 name varchar(20),
@@ -45,7 +45,7 @@ hiredate date
 )
 ```
 ###### 2. 创建user对象 (O)
-```
+```java
 @Data
 @AllArgsConstructor
 public class User{
@@ -313,7 +313,6 @@ id:给resultMap指定一个id
 
 
 
-
 ---
 #### typeAliases 类型别名
 * 在主配置文件中
@@ -434,7 +433,6 @@ class Dept{
 * 存: 在使用session对象去执行SQL命令时，传递的参数放在容器中
 * 取: 在mapper文件中取
 
-
 ---
 
 ###  Mybatis解决jdbc编程的问题
@@ -446,7 +444,6 @@ class Dept{
   * 解决：Mybatis自动将java对象映射至sql语句，通过statement中的parameterType定义输入参数的类型。
 4. 对结果集解析麻烦，sql变化导致解析代码变化，且解析前需要遍历，如果能将数据库记录封装成pojo对象解析比较方便。
   * 解决：Mybatis自动将sql执行结果映射至java对象，通过statement中的resultType定义输出结果的类型。
-
 
 ---
 
@@ -463,7 +460,6 @@ mybatis可以通过XML或注解方式灵活配置要运行的sql语句，并将j
 
 * Hibernate对象/关系映射能力强，数据库无关性好，对于关系模型要求高的软件（例如需求固定的定制化软件）如果用hibernate开发可以节省很多代码，提高效率。但是Hibernate的学习门槛高，要精通门槛更高，而且怎么设计O/R映射，在性能和对象模型之间如何权衡，以及怎样用好Hibernate需要具有很强的经验和能力才行。
 总之，按照用户的需求在有限的资源环境下只要能做出维护性、扩展性良好的软件架构都是好架构，所以框架只有适合才是最好。
-
 
 ---
 

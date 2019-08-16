@@ -15,7 +15,7 @@ SpringCloud Euraka是SpringCloud集合中一个组件，它是对Euraka的集成
 * 启动类上贴上@EnableEurekaServer注解
 * 使用application.yml 添加相关配置信息. https://cloud.spring.io/spring-cloud-netflix/single/spring-cloud-netflix.html#spring-cloud-eureka-server
 * 运行测试，打开浏览器输入http://localhost:8761
-  集群才需要配置城true
+  集群才需要配置成true
 
 ![](../assets/01_草稿-04b3faae.png)
 ![](../assets/01_草稿-4eda62ac.png)

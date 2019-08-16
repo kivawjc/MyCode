@@ -34,7 +34,7 @@ MaxAutoRetriesNextServer=0 : 只在当前服务器下重试
 
 
 解决方法: 设置不连接,失败时也不重试
-```
+```yml
 # 指定负载均衡策略 : 当服务器出现异常时，使用哪一种轮询规则
 PRODUCT-SERVER:
   ribbon:
