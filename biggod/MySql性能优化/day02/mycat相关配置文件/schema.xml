@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+
+    <schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100">
+	<table name="hello" primaryKey="id" dataNode="dn01,dn02" rule="rule1"/>	
+    </schema>
+    
+    <dataNode name="dn01" dataHost="dh01" database="hello" />  
+    <dataNode name="dn02" dataHost="dh02" database="hello" />  
+    
+    <dataHost name="dh01" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">  
+            <heartbeat>select user()</heartbeat>  
+            <writeHost host="192.168.142.128" url="192.168.142.128:3306" user="root" password="WolfCode_2017">
+				<readHost host="192.168.142.129" url="192.168.142.129:3306" user="root" password="WolfCode_2017"></readHost>
+			</writeHost>
+			<writeHost host="192.168.142.129" url="192.168.142.129:3306" user="root" password="WolfCode_2017"></writeHost>
+    </dataHost> 
+    <dataHost name="dh02" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">  
+            <heartbeat>select user()</heartbeat>  
+            <writeHost host="192.168.142.132" url="192.168.142.132:3306" user="root" password="WolfCode_2017">
+				<readHost host="192.168.142.131" url="192.168.142.131:3306" user="root" password="WolfCode_2017"></readHost>
+			</writeHost>
+			<writeHost host="192.168.142.131" url="192.168.142.131:3306" user="root" password="WolfCode_2017"></writeHost>
+    </dataHost> 
+</mycat:schema>

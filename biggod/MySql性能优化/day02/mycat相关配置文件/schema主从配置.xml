@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+
+<mycat:schema xmlns:mycat="http://io.mycat/">
+
+    <schema name="TESTDB" checkSQLschema="false" sqlMaxLimit="100">
+	<table name="order" primaryKey="id" dataNode="dn01"/>	
+    </schema>
+
+
+    <dataNode name="dn01" dataHost="dh01" database="hello" />  
+    <dataHost name="dh01" maxCon="1000" minCon="10" balance="1" writeType="0" dbType="mysql" dbDriver="native">  
+            <heartbeat>select user()</heartbeat>  
+            <writeHost host="192.168.195.128" url="192.168.195.128:3306" user="root" password="Kiva_2019">
+		<readHost host="192.168.195.130" url="192.168.195.130:3306" user="root" password="Kiva_2019"></readHost>
+	</writeHost>
+	<writeHost host="192.168.195.130" url="192.168.195.130:3306" user="root" password="Kiva_2019"></writeHost>
+    </dataHost> 
+</mycat:schema>
+
